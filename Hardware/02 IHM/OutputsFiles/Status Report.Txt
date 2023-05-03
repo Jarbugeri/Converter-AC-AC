@@ -1,0 +1,12 @@
+Output: NC Drill Files JLCPCB
+Type  : NC Drill
+From  : PCB Document [PCB.PcbDoc]
+   Generated File[PCB.TXT]
+   Generated File[PCB.LDP]
+   Generated File[PCB.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 20:44:25 On 02/05/2023
