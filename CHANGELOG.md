@@ -26,8 +26,8 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 ### Changed
 ### Removed
 
-- [releases] (https://github.com/Jarbugeri/Converter-AC-AC/releases)
-- [0.0.0] (https://github.com/Jarbugeri/Converter-AC-AC/releases/tag/v0.0.0)
+[releases]: https://github.com/Jarbugeri/Converter-AC-AC/releases
+[0.0.0]: https://github.com/Jarbugeri/Converter-AC-AC/releases/tag/v0.0.0
 
 
 
