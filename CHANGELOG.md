@@ -14,24 +14,20 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 ## [Unreleased]
 
 ### Added
-
 ### Changed
-
 ### Removed
 
 ## [0.0.0] - 2023-06-17
 
 ### Added
-
 - Adicionado projeto PCB inversor 
 - Adicionado projeto PCB IHM
 - Primeira versão do FW STM32
-
 ### Changed
-
 ### Removed
 
-- [0.0.0](https://github.com/Jarbugeri/Converter-AC-AC/tree/main)
+- [releases] https://github.com/Jarbugeri/Converter-AC-AC/releases
+- [0.0.0] https://github.com/Jarbugeri/Converter-AC-AC/releases/tag/v0.0.0
 
 
 
