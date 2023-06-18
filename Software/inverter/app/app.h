@@ -17,6 +17,9 @@
 #include "libs.h"
 #include <string.h>
 #include <stdio.h>
+#include "lcd16x2.h"
+#include "stm32f1xx_hal.h"
+
 
 /****************
  *   Defines	*
@@ -88,7 +91,7 @@ typedef struct _app_t_
     float			sa;
     float			sb;
     float			sc;
-
+    float counter;
     /** Menus **/
 
     void (*menu_vector[MENU_NUMBERS])();

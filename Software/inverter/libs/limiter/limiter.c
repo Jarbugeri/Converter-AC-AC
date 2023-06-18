@@ -21,13 +21,13 @@
  * @param limiter  Ponteiro para a estrutura do limiter
  * @param fs    Frequencia de atualizacao do limiter
  */
-void limiter_initialize(limiter_t *limiter, float fs)
+void limiter_initialize(limiter_t *limiter, float fs, float rate)
 {
     limiter->fs = fs;
     limiter->ts = 1.0 / fs;
     limiter->input = 0.0;
     limiter->output = 0.0;
-    limiter->rate = 0.0;
+    limiter->rate = rate;
 }
 
 /**
