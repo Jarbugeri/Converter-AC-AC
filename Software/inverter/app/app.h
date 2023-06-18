@@ -15,14 +15,25 @@
 #include "math.h"
 #include "main.h"
 #include "libs.h"
+#include <string.h>
+#include <stdio.h>
 
 /****************
  *   Defines	*
  ****************/
 
 #define BT_NUMBERS		4
-#define MENU_NUMBERS	4
+#define MENU_NUMBERS	3
 
+#define BT_ENTER		0
+#define BT_UP			1
+#define BT_DOWN			2
+#define BT_MENU			3
+
+#define BT_PRESS(BT)	app->button[BT].state && app->button[BT].flag
+#define BT_RESET(BT)	app->button[BT].flag = 0
+
+#define PARAMETERS_SIZE	6
 /** Filter  **/
 
 #define LPO_FC				30.0
@@ -81,9 +92,15 @@ typedef struct _app_t_
     /** Menus **/
 
     void (*menu_vector[MENU_NUMBERS])();
+    char menu_name[MENU_NUMBERS][16];
     int menu_selection;
+    int menu_function;
     int x;
 
+    /** Parameters **/
+    int		param_index;
+    float* 	param_ptr[PARAMETERS_SIZE];
+    char 	param_name[PARAMETERS_SIZE][16];
     /** Buttons **/
 
     button_t button[BT_NUMBERS];

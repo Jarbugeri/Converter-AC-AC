@@ -181,24 +181,4 @@ void so_filter_initialize(so_filter_t * so_filter, float fs, float fc, float Q, 
     }else{
         so_filter->wc = 6.28318530717958647692528676655900 * fc;
     }
-
-    //!< Atualiza Filtro baseado no tipo
-    switch (type)
-    {
-       case SO_FILTER_LOWPASS:
-                               so_filter_update_coeff_lowpass(so_filter);
-                               break;
-       case SO_FILTER_BANDPASS:
-                               so_filter_update_coeff_bandpass(so_filter);
-                               break;
-       case SO_FILTER_NOTCH:
-                               so_filter_update_coeff_notch(so_filter);
-                               break;
-       case SO_FILTER_HIGHPASS:
-                               so_filter_update_coeff_highpass(so_filter);
-                               break;
-       default:
-                               so_filter_update_coeff_lowpass(so_filter);
-                               break;
-    }
 }

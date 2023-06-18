@@ -23,10 +23,15 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "lcd16x2.h"
+#include "app.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+
+app_t app;
 
 /* USER CODE END PTD */
 
@@ -94,6 +99,11 @@ int main(void)
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
+  lcd16x2_init_4bits(RS_GPIO_Port, RS_Pin, EN_Pin,
+		  DATA0_GPIO_Port, DATA0_Pin, DATA1_Pin, DATA2_Pin, DATA3_Pin);
+
+  app_init(&app);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -103,6 +113,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	app_loop(&app);
+
   }
   /* USER CODE END 3 */
 }
@@ -321,7 +334,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pins : BT1_Pin BT2_Pin BT3_Pin BT4_Pin */
   GPIO_InitStruct.Pin = BT1_Pin|BT2_Pin|BT3_Pin|BT4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
