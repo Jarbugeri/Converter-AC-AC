@@ -24,9 +24,9 @@ The application has a main loop called `app_loop` that continuously executes the
 
 Below are two images illustrating the application in action:
 
-![Inverter Acceleration](Aceleration.png)
+![Inverter Acceleration](Registers/Aceleration.pnh)
 
-![Inverter Acceleration zoom](Aceleration_zoom.jpg)
+![Inverter Acceleration zoom](Registers/Aceleration_zoom.jpg)
 
 Please add the corresponding images using the provided links to visualize the application's figures in operation.
 
