@@ -30,9 +30,9 @@
 void WaveGenerator_update(WaveGenerator_t * SineWave, float Fs, float Fg, float A)
 {
     //!< Atualiza frequencia da integra��o do gerador
-    SineWave->Fs = Fs;
+    //SineWave->Fs = Fs;
     //!< Atualiza periodo da integra��o do gerador
-    SineWave->Ts = 1.0 / Fs;
+    //SineWave->Ts = 1.0 / Fs;
     //!< Atualiza Passo de integra��o
     SineWave->Delta = TWOPI * Fg * SineWave->Ts;
     //!< Atualiza frequencia fundamental da gera��o
@@ -60,7 +60,7 @@ void WaveGenerator_sine_single_run(WaveGenerator_t * SineWave)
     }
 
     //!< Atualiza as saidas
-    SineWave->a = SineWave->A * sin(SineWave->t + THETA_A);
+    SineWave->a = SineWave->A * sinf(SineWave->t + THETA_A);
 
 }
 
@@ -84,9 +84,9 @@ void WaveGenerator_sine_run(WaveGenerator_t * SineWave)
 
     //!< Atualiza as saidas
 
-    SineWave->a = SineWave->A * sin(SineWave->t + THETA_A);
-    SineWave->b = SineWave->A * sin(SineWave->t + THETA_B);
-    SineWave->c = SineWave->A * sin(SineWave->t + THETA_C);
+    SineWave->a = SineWave->A * sinf(SineWave->t + THETA_A);
+    SineWave->b = SineWave->A * sinf(SineWave->t + THETA_B);
+    SineWave->c = SineWave->A * sinf(SineWave->t + THETA_C);
 
 }
 

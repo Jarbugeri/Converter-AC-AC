@@ -286,7 +286,9 @@ void lcd16x2_init_4bits(
   //4. Function set; Enable 2 lines, Data length to 4 bits
   lcd16x2_writeCommand(LCD_FUNCTIONSET | LCD_FUNCTION_N);
   //3. Display control (Display ON, Cursor ON, blink cursor)
-  lcd16x2_writeCommand(LCD_DISPLAYCONTROL | LCD_DISPLAY_B | LCD_DISPLAY_C | LCD_DISPLAY_D);
+  //lcd16x2_writeCommand(LCD_DISPLAYCONTROL | LCD_DISPLAY_B | LCD_DISPLAY_C | LCD_DISPLAY_D);
+  //3. Display control (Display ON, Cursor OFF, blink cursor OFF)
+  lcd16x2_writeCommand(LCD_DISPLAYCONTROL | LCD_DISPLAY_D );
   //4. Clear LCD and return home
   lcd16x2_writeCommand(LCD_CLEARDISPLAY);
   LCD_MS_DELAY(3);

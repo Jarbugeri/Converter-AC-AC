@@ -11,8 +11,6 @@
 
 #include "app.h"
 
-
-
 /****************
  *  Functions	*
  ****************/
@@ -136,7 +134,7 @@ void app_init(app_t * app) {
 
     /** Configs **/
 
-	app->fs = 72000000 / 6000 ;
+	app->fs = 72000000 / TIM1->ARR ;
 	app->ts = 1.0 / app->fs;
 
     /** Bus voltage **/
@@ -152,7 +150,7 @@ void app_init(app_t * app) {
 	app->modulation_amp = 0.0;
 	app->modulation_freq = 0.0;
 
-	limiter_initialize(&app->limiter, app->fs, 20.0);
+	limiter_initialize(&app->limiter, app->fs, 1.0);
 
 
 	WaveGenerator_update(&app->gerador, app->fs, app->modulation_freq, app->modulation_amp);
@@ -196,8 +194,6 @@ void app_init(app_t * app) {
 
 void app_loop(app_t * app){
 
-	while (1){
-
 		app->button[0].state = HAL_GPIO_ReadPin(BT1_GPIO_Port, BT1_Pin);
 		app->button[1].state = HAL_GPIO_ReadPin(BT2_GPIO_Port, BT2_Pin);
 		app->button[2].state = HAL_GPIO_ReadPin(BT3_GPIO_Port, BT3_Pin);
@@ -210,14 +206,14 @@ void app_loop(app_t * app){
 
 		app->menu_vector[app->menu_function](app);
 
-
-	}
 }
 
 void app_isr(app_t * app){
 
-    /** Bus voltage **/
-	app->counter = app->counter + 1.0 / 12000.0;
+	app->timer = app->timer + app->ts;
+
+	/** Bus voltage **/
+
 	app->vbus.max = fmaxf(app->vbus.raw, app->vbus.max);
 	app->vbus.min = fmaxf(app->vbus.raw, app->vbus.min);
 
@@ -229,14 +225,16 @@ void app_isr(app_t * app){
 	limiter_rate_run(&app->limiter, app->ref_freq);
 
 	app->modulation_freq = app->limiter.output;
-	app->modulation_amp  = app->limiter.output /GENERATOR_NOMINAL_FS;
+	app->modulation_amp  = app->limiter.output * GENERATOR_NOMINAL_TS;
 
 	WaveGenerator_update(&app->gerador, app->fs, app->modulation_freq, app->modulation_amp);
-	WaveGenerator_sine_run(&app->gerador);
+	WaveGenerator_sine_single_run(&app->gerador);
 
 	app->sa = app->gerador.a;
 	app->sb = app->gerador.b;
 	app->sc = app->gerador.c;
 
     /** PWM **/
+
+
 }
