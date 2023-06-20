@@ -17,6 +17,7 @@
 #include "libs.h"
 #include <string.h>
 #include <stdio.h>
+#include "lcd16x2.h"
 
 /****************
  *   Defines	*
@@ -47,6 +48,7 @@
 #define NOTCH_WARP			PRE_WARP_ON
 
 #define GENERATOR_NOMINAL_FS	60.0
+#define GENERATOR_NOMINAL_TS	1.0 / GENERATOR_NOMINAL_FS
 #define GENERATOR_NOMINAL_A		1.0
 
 /****************
@@ -71,6 +73,7 @@ typedef struct _app_t_
 
     float fs;       //!< Frequencia de amostragem
     float ts;       //!< Periodo de amostragem, calculado na inicializacao
+    float timer;
 
     /** Bus voltage **/
 
@@ -95,7 +98,6 @@ typedef struct _app_t_
     char menu_name[MENU_NUMBERS][16];
     int menu_selection;
     int menu_function;
-    int x;
 
     /** Parameters **/
     int		param_index;
@@ -104,7 +106,6 @@ typedef struct _app_t_
     /** Buttons **/
 
     button_t button[BT_NUMBERS];
-
 }app_t;
 
 /****************

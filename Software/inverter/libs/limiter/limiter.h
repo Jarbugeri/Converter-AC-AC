@@ -54,7 +54,7 @@ typedef struct _limiter_t_
  * @param limiter  Ponteiro para a estrutura do limiter
  * @param fs    Frequencia de atualizacao do limiter
  */
-void limiter_initialize(limiter_t *limiter, float fs);
+void limiter_initialize(limiter_t *limiter, float fs, float rate);
 
 /**
  * @brief Reseta o limiter

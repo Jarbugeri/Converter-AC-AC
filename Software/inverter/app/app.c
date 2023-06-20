@@ -10,8 +10,6 @@
  ****************/
 
 #include "app.h"
-#include "lcd16x2.h"
-
 
 /****************
  *  Functions	*
@@ -64,13 +62,25 @@ void app_menu_main(app_t * app){
 void app_menu_monitor(app_t * app){
 
 	lcd16x2_setCursor(0,0);
-	lcd16x2_printf(app->menu_name[app->menu_selection]);
+	lcd16x2_printf("Act Freq = %d", (int) app->modulation_freq);
+	lcd16x2_setCursor(1,0);
+	lcd16x2_printf("Ref Freq = %d", (int) app->ref_freq);
 
 	if(BT_PRESS(BT_MENU)){
 		BT_RESET(BT_MENU);
 		app->menu_function = 0;
 		lcd16x2_clear();
 	}
+
+	if(BT_PRESS(BT_UP)){
+		BT_RESET(BT_UP);
+		app->ref_freq = app->ref_freq + 1.0;
+	}
+	if(BT_PRESS(BT_DOWN)){
+		BT_RESET(BT_DOWN);
+		app->ref_freq = app->ref_freq - 1.0;
+	}
+	limiter_saturation(app->ref_freq, 0, 60.0)
 }
 
 /**
@@ -124,7 +134,7 @@ void app_init(app_t * app) {
 
     /** Configs **/
 
-	app->fs = 10000.0;
+	app->fs = 72000000 / TIM1->ARR ;
 	app->ts = 1.0 / app->fs;
 
     /** Bus voltage **/
@@ -136,11 +146,12 @@ void app_init(app_t * app) {
 
     /** Controle V/F **/
 
-	app->ref_freq = 0.0;
+	app->ref_freq = 1.0;
 	app->modulation_amp = 0.0;
 	app->modulation_freq = 0.0;
 
-	limiter_initialize(&app->limiter, app->fs);
+	limiter_initialize(&app->limiter, app->fs, 1.0);
+
 
 	WaveGenerator_update(&app->gerador, app->fs, app->modulation_freq, app->modulation_amp);
 
@@ -183,8 +194,6 @@ void app_init(app_t * app) {
 
 void app_loop(app_t * app){
 
-	while (1){
-
 		app->button[0].state = HAL_GPIO_ReadPin(BT1_GPIO_Port, BT1_Pin);
 		app->button[1].state = HAL_GPIO_ReadPin(BT2_GPIO_Port, BT2_Pin);
 		app->button[2].state = HAL_GPIO_ReadPin(BT3_GPIO_Port, BT3_Pin);
@@ -197,13 +206,13 @@ void app_loop(app_t * app){
 
 		app->menu_vector[app->menu_function](app);
 
-		app_isr(app);
-	}
 }
 
 void app_isr(app_t * app){
 
-    /** Bus voltage **/
+	app->timer = app->timer + app->ts;
+
+	/** Bus voltage **/
 
 	app->vbus.max = fmaxf(app->vbus.raw, app->vbus.max);
 	app->vbus.min = fmaxf(app->vbus.raw, app->vbus.min);
@@ -216,14 +225,16 @@ void app_isr(app_t * app){
 	limiter_rate_run(&app->limiter, app->ref_freq);
 
 	app->modulation_freq = app->limiter.output;
-	app->modulation_amp  = GENERATOR_NOMINAL_FS / app->limiter.output;
+	app->modulation_amp  = app->limiter.output * GENERATOR_NOMINAL_TS;
 
 	WaveGenerator_update(&app->gerador, app->fs, app->modulation_freq, app->modulation_amp);
-	WaveGenerator_sine_run(&app->gerador);
+	WaveGenerator_sine_single_run(&app->gerador);
 
 	app->sa = app->gerador.a;
 	app->sb = app->gerador.b;
 	app->sc = app->gerador.c;
 
     /** PWM **/
+
+
 }
