@@ -195,6 +195,9 @@ void app_init(app_t * app) {
 	app->param_ptr[5] = &app->ref_freq;
 	strcpy(app->param_name[5], "Ref Freq");
 
+	app->param_ptr[6] = &app->vbus.filtered;
+	strcpy(app->param_name[6], "Vbus");
+
 
     /** Buttons **/
 
@@ -219,12 +222,14 @@ void app_loop(app_t * app){
 
 void app_isr(app_t * app){
 
+	app->vbus.raw = ADC_VOLTAGE_GAIN * ( (float) HAL_ADC_GetValue(&hadc1));
+
 	app->timer = app->timer + app->ts;
 
 	/** Bus voltage **/
 
 	app->vbus.max = fmaxf(app->vbus.raw, app->vbus.max);
-	app->vbus.min = fmaxf(app->vbus.raw, app->vbus.min);
+	app->vbus.min = fminf(app->vbus.raw, app->vbus.min);
 
 	so_filter_run(&app->lpo,   app->vbus.raw);
 	app->vbus.filtered = so_filter_run(&app->notch, app->lpo.states.y0);

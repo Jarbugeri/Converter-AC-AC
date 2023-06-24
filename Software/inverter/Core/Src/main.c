@@ -98,6 +98,8 @@ int main(void)
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
+  HAL_ADC_Start(&hadc1);
+
   lcd16x2_init_4bits(RS_GPIO_Port, RS_Pin, EN_Pin,
 		  DATA0_GPIO_Port, DATA0_Pin, DATA1_Pin, DATA2_Pin, DATA3_Pin);
 
@@ -186,7 +188,7 @@ static void MX_ADC1_Init(void)
   */
   hadc1.Instance = ADC1;
   hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
-  hadc1.Init.ContinuousConvMode = DISABLE;
+  hadc1.Init.ContinuousConvMode = ENABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
