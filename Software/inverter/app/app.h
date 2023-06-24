@@ -18,6 +18,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "lcd16x2.h"
+#include "stm32f1xx_hal_adc.h"		// ADC functions
 
 /****************
  *   Defines	*
@@ -34,7 +35,7 @@
 #define BT_PRESS(BT)	app->button[BT].state && app->button[BT].flag
 #define BT_RESET(BT)	app->button[BT].flag = 0
 
-#define PARAMETERS_SIZE	6
+#define PARAMETERS_SIZE	7
 /** Filter  **/
 
 #define LPO_FC				30.0
@@ -50,6 +51,22 @@
 #define GENERATOR_NOMINAL_FS	60.0
 #define GENERATOR_NOMINAL_TS	1.0 / GENERATOR_NOMINAL_FS
 #define GENERATOR_NOMINAL_A		1.0
+
+/**  ADC gains  **/
+
+#define ADC_REF_VOLTAGE 	3.3f
+#define ADC_BITS_NUMBER		12
+#define ADC_SCALE_FACTOR 	(ADC_REF_VOLTAGE / ((1 << ADC_BITS_NUMBER) - 1))
+#define ADC_AMPOP_GAIN		168.0f
+#define ADC_VOLTAGE_GAIN	ADC_SCALE_FACTOR * ADC_AMPOP_GAIN
+
+
+
+/****************
+ *   Extern 	*
+ ****************/
+
+extern ADC_HandleTypeDef hadc1;
 
 /****************
  *   Structs	*
