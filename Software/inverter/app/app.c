@@ -25,6 +25,8 @@
  */
 void app_menu_main(app_t * app){
 
+	limiter_saturation(app->menu_selection, 1, MENU_NUMBERS-1)
+
 	lcd16x2_setCursor(0,0);
 	lcd16x2_printf(app->menu_name[0]);
 	lcd16x2_setCursor(1,0);
@@ -34,12 +36,13 @@ void app_menu_main(app_t * app){
 	if(BT_PRESS(BT_UP)){
 		BT_RESET(BT_UP);
 		app->menu_selection ++;
+		lcd16x2_clear();
 	}
 	if(BT_PRESS(BT_DOWN)){
 		BT_RESET(BT_DOWN);
 		app->menu_selection --;
+		lcd16x2_clear();
 	}
-	limiter_saturation(app->menu_selection, 1, MENU_NUMBERS-1)
 
 	if(BT_PRESS(BT_MENU)){
 		BT_RESET(BT_MENU);
@@ -75,10 +78,12 @@ void app_menu_monitor(app_t * app){
 	if(BT_PRESS(BT_UP)){
 		BT_RESET(BT_UP);
 		app->ref_freq = app->ref_freq + 1.0;
+		lcd16x2_clear();
 	}
 	if(BT_PRESS(BT_DOWN)){
 		BT_RESET(BT_DOWN);
 		app->ref_freq = app->ref_freq - 1.0;
+		lcd16x2_clear();
 	}
 	limiter_saturation(app->ref_freq, 0, 60.0)
 }
@@ -95,25 +100,27 @@ void app_menu_monitor(app_t * app){
  */
 void app_menu_parameters(app_t * app){
 
+	limiter_saturation(app->param_index, 0, PARAMETERS_SIZE-1)
+
 	lcd16x2_setCursor(0,0);
 	lcd16x2_printf(app->menu_name[app->menu_selection]);
 
 	lcd16x2_setCursor(1,0);
 	lcd16x2_printf(app->param_name[app->param_index]);
 
-	lcd16x2_setCursor(1,8);
+	lcd16x2_setCursor(1,10);
 	lcd16x2_printf("%d", (int) * app->param_ptr[app->param_index]);
 
 	if(BT_PRESS(BT_UP)){
 		BT_RESET(BT_UP);
 		app->param_index ++;
+		lcd16x2_clear();
 	}
 	if(BT_PRESS(BT_DOWN)){
 		BT_RESET(BT_DOWN);
 		app->param_index --;
+		lcd16x2_clear();
 	}
-
-	limiter_saturation(app->param_index, 0, PARAMETERS_SIZE-1)
 
 	if(BT_PRESS(BT_MENU)){
 		BT_RESET(BT_MENU);
@@ -166,7 +173,9 @@ void app_init(app_t * app) {
 	strcpy(app->menu_name[1], "Monitor");
 	strcpy(app->menu_name[2], "Parameters");
 
-    /** Parameters **/
+    /** Parameters
+     * Use 8 Char for name
+     * **/
 
 	app->param_ptr[0] = &app->lpo.fc;
 	strcpy(app->param_name[0], "LPO Fc");
